@@ -1,0 +1,77 @@
+root@hnn:/usr/local/hadoop/sbin# jps
+20731 Jps
+19931 NameNode
+20240 SecondaryNameNode
+20380 ResourceManager
+root@hnn:/usr/local/hadoop/sbin# ssh root@hdn1
+Welcome to Ubuntu 12.04.4 LTS (GNU/Linux 3.11.0-15-generic x86_64)
+
+* Documentation:  https://help.ubuntu.com/
+
+New release '14.04.1 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+Last login: Sun May 24 12:07:14 2015 from hnn
+root@hdn1:~# jps
+21564 NodeManager
+22004 Jps
+root@hdn1:~# ssh root@hdn2
+Welcome to Ubuntu 12.04.4 LTS (GNU/Linux 3.11.0-15-generic x86_64)
+
+* Documentation:  https://help.ubuntu.com/
+
+345 packages can be updated.
+222 updates are security updates.
+
+New release '14.04.1 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+Last login: Sun May 24 12:19:30 2015 from hdn1
+root@hdn2:~# jps
+20368 Jps
+19930 NodeManager
+root@hdn2:~# ssh root@hrm
+Welcome to Ubuntu 12.04.4 LTS (GNU/Linux 3.11.0-15-generic x86_64)
+
+* Documentation:  https://help.ubuntu.com/
+
+345 packages can be updated.
+222 updates are security updates.
+
+New release '14.04.1 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+Last login: Sun May 24 12:22:59 2015 from hnn
+root@hrm:~# jps
+20455 ResourceManager
+21146 Jps
+20664 NodeManager
+root@hrm:~#
+
+
+
+Steps
+
+1] Download 2.6.0 from website which contains apache in its name. Download binaries.
+2] Untar into /usr/local directory. The directory name usually containes version number so rename hadoop”version” directory to hadoop.
+3] Edit ~/.bashrc files in all the nodes and add the below statements for setting required environment variables
+#Hadoop variables
+export JAVA_HOME=/usr/lib/jvm/jdk/
+export HADOOP_INSTALL=/usr/local/hadoop
+export PATH=$PATH:$HADOOP_INSTALL/bin
+export PATH=$PATH:$HADOOP_INSTALL/sbin
+export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_HOME=$HADOOP_INSTALL
+export HADOOP_HDFS_HOME=$HADOOP_INSTALL
+export YARN_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
+###end of paste
+4] Remove Openjdk 6 completely and install Openjdk 7. Create a softlink under /usr/bin/jvm like “ln -s java-7-openjdk-amd64 jdk”
+5] Edit hadoop-env.sh file and set JAVA_HOME environment variable to /usr/lib/jvm/jdk/
+6] Then edit hadoop xml files appropriate to number of nodes.
+7] Finally run the start-all.sh file under /usr/local/hadoop/sbin directory if this is deprecated we can execute  start-dfs.sh and start-yarn.sh file for hadoop final setup
+
+Thanks and Regards,
+Pradeep
+
