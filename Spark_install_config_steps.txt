@@ -1,0 +1,48 @@
+
+28/5/2015
+
+
+Removed Java openjdk-6-* on sprk1 and sprk2
+Installed Java openjdk-7-* on sprk1 and sprk2
+Installed spark 1.3.1 which is compatible to hadoop 2.6.X on sprk1 and sprk2
+Standalone installation
+2 nodes with one master [sprk1] and one slave [sprk2]
+Configured ssh b/w sprk1 and sprk2
+	ssh-keygen
+	ssh-copyid root@sprk1
+	ssh-copyid root@sprk2
+Configured JAVA_HOME in ~/.bashrc
+	export JAVA_HOME=/usr/lib/jvm/jdk
+created jdk softlink in /usr/lib/jvm/ directory
+	ln -s java-7-openjdk-amd64 jdk
+Tried to run spark cluster manually using start-master.sh in sbin directory on sprk1 but could not succeed attaching a worker node probably due to port number which we enter as 8080 which is wrong. Then we moved to start-all.sh 
+Configuration of Spark
+	conf/slaves - added slave node name [sprk2]
+	execute sbin/start-all.sh
+	
+Executed
+Entering into spark shell
+	./bin/pyspark --master local
+Import below modules before any command is executed in Python spark shell
+	from pyspark import SparkContext, SparkConf
+Set the context for executing word count example
+	conf = SparkConf().setAppName("word_count.txt").setMaster(master)
+	conf = SparkConf().setAppName("PythonWordCount")
+
+   Wordcount Example code
+
+    conf = SparkConf().setAppName("wordcount").setMaster("sprk1")
+    lines = sc.textFile("/tmp/word_count.txt", 1)
+    counts = lines.flatMap(lambda x: x.split(' ')) \
+                  .map(lambda x: (x, 1)) \
+                  .reduceByKey(add)
+    output = counts.collect()
+    for (word, count) in output:
+        print "%s: %i" % (word, count)
+
+    sc.stop()
+
+Output will be displayed on sceen [Scroll back to see the result].
+
+We executed the python examples under examples directory as below,
+	./bin/spark-submit examples/src/main/python/wordcount.py "input file name with data"
