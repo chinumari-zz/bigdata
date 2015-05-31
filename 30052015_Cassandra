@@ -1,0 +1,83 @@
+http://archive.apache.org/dist/cassandra
+cassandra.apache.org/download
+
+Cassandra 2.1.2
+
+Hive with cassandra
+
+https://issues.apache.org/jira/browse/CASSANDRA-4131
+
+https://books.google.co.in/books?id=cf2rBwAAQBAJ&pg=PA284&lpg=PA284&dq=hadoop+2.6%2Bcassandra&source=bl&ots=W3SStzekMX&sig=LNoT3rkU0qtDDiB_fhWLvAKEUh0&hl=en&sa=X&ei=6dRnVZiVFKrksATw_4H4Bg&ved=0CFQQ6AEwCQ#v=onepage&q=hadoop%202.6%2Bcassandra&f=false
+
+PlanetCassandra - http://planetcassandra.org/what-is-nosql/
+Get What is NoSql here.
+
+Apache - http://wiki.apache.org/cassandra/GettingStarted
+Getting started with Cassandra
+
+
+No SQL database
+
+Cassandra
+
+Key features
+http://docs.datastax.com/en/cassandra/2.1/cassandra/architecture/architectureIntro_c.html
+
+
+
+
+Core concepts
+
+BloomFilter - Intro
+
+Consistent Hashing - http://www.paperplanes.de/2011/12/9/the-magic-of-consistent-hashing.html
+
+sharding - http://www.quora.com/Whats-the-difference-between-sharding-and-partition
+
+Cql - came in to understand datamodel without reading data
+http://www.slideshare.net/DataStax/understanding-how-cql3-maps-to-cassandras-internal-data-structure
+
+
+Basic commands
+
+Advanced Concepts
+
+Commands
+
+Integration with Hadoop
+
+migration of data from mysql to cassandra
+how it can be done.
+
+MR job with cassandra - does this require a copy to hdfs from cassandra to 
+
+cassandra read v/s write
+advantages
+
+ex: vertica - compression/ sorted,
+
+does cassandra provide capability to store data in a stored/compressed/sorted data.
+integrated compression, leveled compaction
+enforced via foreign keys/referential integrity constraints.
+CAP Theorem - 
+a NoSQL data model easily handles such situations and delivers very fast performance for both read and write operations.
+
+
+
+Hands=on
+
+
+Write Map-Reduce to get data from Cassandra
+
+Hands-on
+
+More Advanced Concepts
+
+Pagination
+Composite Keys
+Dynamic Tables
+Node
+Gossip Protocol
+Analytics and Business Intelligence - How best Cassandra does it today
+
+
