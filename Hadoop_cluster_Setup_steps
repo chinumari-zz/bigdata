@@ -68,7 +68,7 @@ export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
 export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
 ###end of paste
 4] Remove Openjdk 6 completely and install Openjdk 7. Create a softlink under /usr/bin/jvm like “ln -s java-7-openjdk-amd64 jdk”
-5] Edit hadoop-env.sh file and set JAVA_HOME environment variable to /usr/lib/jvm/jdk/
+5] Edit hadoop-env.sh file and set JAVA_HOME environment variable to /usr/lib/jvm/jdk
 6] Then edit hadoop xml files appropriate to number of nodes.
 -rw-r--r-- 1 20000 20000   860 Jun  3 19:36 core-site.xml
 -rw-r--r-- 1 20000 20000  1468 Jun  3 20:00 yarn-site.xml
