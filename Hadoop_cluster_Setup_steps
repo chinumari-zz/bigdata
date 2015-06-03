@@ -70,6 +70,13 @@ export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
 4] Remove Openjdk 6 completely and install Openjdk 7. Create a softlink under /usr/bin/jvm like “ln -s java-7-openjdk-amd64 jdk”
 5] Edit hadoop-env.sh file and set JAVA_HOME environment variable to /usr/lib/jvm/jdk/
 6] Then edit hadoop xml files appropriate to number of nodes.
+-rw-r--r-- 1 20000 20000   860 Jun  3 19:36 core-site.xml
+-rw-r--r-- 1 20000 20000  1468 Jun  3 20:00 yarn-site.xml
+-rw-r--r-- 1 root  root    843 Jun  3 20:04 mapred-site.xml
+-rw-r--r-- 1 20000 20000    14 Jun  3 20:06 slaves
+-rw-r--r-- 1 root  root      4 Jun  3 20:59 masters
+-rw-r--r-- 1 20000 20000   955 Jun  3 21:02 hdfs-site.xml
+-rw-r--r-- 1 20000 20000  4228 Jun  3 21:23 hadoop-env.sh
 7] Finally run the start-all.sh file under /usr/local/hadoop/sbin directory if this is deprecated we can execute  start-dfs.sh and start-yarn.sh file for hadoop final setup
 
 Thanks and Regards,
