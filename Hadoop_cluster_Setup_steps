@@ -1,51 +1,58 @@
-root@hnn:/usr/local/hadoop/sbin# jps
-20731 Jps
-19931 NameNode
-20240 SecondaryNameNode
-20380 ResourceManager
-root@hnn:/usr/local/hadoop/sbin# ssh root@hdn1
+root@hnn:/usr/local/hadoop/etc/hadoop# jps
+32672 ResourceManager
+32540 SecondaryNameNode
+988 Jps
+32236 NameNode
+root@hnn:/usr/local/hadoop/etc/hadoop# ssh root@hdn1
 Welcome to Ubuntu 12.04.4 LTS (GNU/Linux 3.11.0-15-generic x86_64)
 
-* Documentation:  https://help.ubuntu.com/
+ * Documentation:  https://help.ubuntu.com/
+
+347 packages can be updated.
+223 updates are security updates.
 
 New release '14.04.1 LTS' available.
 Run 'do-release-upgrade' to upgrade to it.
 
-Last login: Sun May 24 12:07:14 2015 from hnn
+Last login: Wed Jun  3 21:32:09 2015 from hnn
 root@hdn1:~# jps
-21564 NodeManager
-22004 Jps
+16992 Jps
+2602 ResourceManager
+16079 NodeManager
+15865 DataNode
 root@hdn1:~# ssh root@hdn2
 Welcome to Ubuntu 12.04.4 LTS (GNU/Linux 3.11.0-15-generic x86_64)
 
-* Documentation:  https://help.ubuntu.com/
+ * Documentation:  https://help.ubuntu.com/
 
-345 packages can be updated.
-222 updates are security updates.
+347 packages can be updated.
+223 updates are security updates.
 
 New release '14.04.1 LTS' available.
 Run 'do-release-upgrade' to upgrade to it.
 
-Last login: Sun May 24 12:19:30 2015 from hdn1
+Last login: Wed Jun  3 21:32:03 2015 from hdn1
 root@hdn2:~# jps
-20368 Jps
-19930 NodeManager
+12107 DataNode
+12322 NodeManager
+13357 Jps
 root@hdn2:~# ssh root@hrm
 Welcome to Ubuntu 12.04.4 LTS (GNU/Linux 3.11.0-15-generic x86_64)
 
-* Documentation:  https://help.ubuntu.com/
+ * Documentation:  https://help.ubuntu.com/
 
-345 packages can be updated.
-222 updates are security updates.
+347 packages can be updated.
+223 updates are security updates.
 
 New release '14.04.1 LTS' available.
 Run 'do-release-upgrade' to upgrade to it.
 
-Last login: Sun May 24 12:22:59 2015 from hnn
+Last login: Wed Jun  3 21:32:32 2015 from hdn2
 root@hrm:~# jps
 20455 ResourceManager
-21146 Jps
-20664 NodeManager
+1208 Jps
+32731 NodeManager
+32519 DataNode
 root@hrm:~#
 
 
