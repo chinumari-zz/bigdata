@@ -1,0 +1,18 @@
+Install Cassandra
+
+1]Installed openJDK7 - Preferred is Oracle Java but it is dictated by DataStax edition of Cassandra. I have stuck to OpenJDK as it is in sync with our Hadoop cluster.
+
+2]Referred to page http://wiki.apache.org/cassandra/DebianPackaging
+to install cassandra
+----------------------
+Adding packages to repo.list
+----------------------------
+sudo sh -c 'echo "deb http://www.apache.org/dist/cassandra/debian 21x main" >> /etc/apt/sources.list.d/cassandra.list'
+
+sudo sh -c 'echo "deb-src http://www.apache.org/dist/cassandra/debian 21x main" >> /etc/apt/sources.list.d/cassandra.list'
+
+
+3]Referred to page https://wiki.apache.org/cassandra/GettingStarted for starting cassandra
+
+start up Cassandra by invoking 'bin/cassandra -f 
+If you start up Cassandra without the "-f" option, it will run in the background. You can stop the process by killing it, using 'pkill -f CassandraDaemon'
