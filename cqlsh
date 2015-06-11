@@ -1,0 +1,95 @@
+Cassandra data modelling - http://www.tutorialspoint.com/cassandra/cassandra_data_model.htm
+
+root@casa1:~/Downloads# cqlsh 192.168.0.10 9042 -u root -p root123
+
+root@cqlsh> CREATE KEYSPACE mykeyspace
+   ... WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
+
+root@cqlsh:mykeyspace1> CREATE TABLE users (
+               ... user_id int PRIMARY KEY,
+               ... fname text,lname text
+               ... );
+
+root@cqlsh:mykeyspace1> INSERT INTO users (user_id,fname,lname)
+               ... VALUES (1234,'abcd','anupama');
+root@cqlsh:mykeyspace1> INSERT INTO users (user_id,fname,lname)  VALUES (1234,'efgh','pradeep');
+root@cqlsh:mykeyspace1> INSERT INTO users (user_id,fname,lname)  VALUES (1234,'nagaraj');
+InvalidRequest: code=2200 [Invalid query] message="Unmatched column names/values"
+root@cqlsh:mykeyspace1> INSERT INTO users (user_id,lname)  VALUES (1234,'nagaraj');
+root@cqlsh:mykeyspace1> INSERT INTO users (fname,lname)  VALUES ('abc','nagaraj');
+InvalidRequest: code=2200 [Invalid query] message="Missing mandatory PRIMARY KEY part user_id"
+root@cqlsh:mykeyspace1> SELECT * FROM users;
+
+ user_id | fname | lname
+---------+-------+---------
+    1234 |  efgh | nagaraj
+
+(1 rows)
+root@cqlsh:mykeyspace1> INSERT INTO users (user_id,lname)  VALUES (1231,'nagaraj');
+root@cqlsh:mykeyspace1> INSERT INTO users (user_id,fname,lname)  VALUES (12,'efgh','pradeep');
+root@cqlsh:mykeyspace1> SELECT * FROM users;
+
+ user_id | fname | lname
+---------+-------+---------
+    1231 |  null | nagaraj
+      12 |  efgh | pradeep
+    1234 |  efgh | nagaraj
+
+(3 rows)
+root@cqlsh:mykeyspace1> help copy
+
+        COPY [cqlsh only]
+
+          COPY x FROM: Imports CSV data into a Cassandra table
+          COPY x TO: Exports data from a Cassandra table in CSV format.
+
+        COPY <table_name> [ ( column [, ...] ) ]
+             FROM ( '<filename>' | STDIN )
+             [ WITH <option>='value' [AND ...] ];
+
+        COPY <table_name> [ ( column [, ...] ) ]
+             TO ( '<filename>' | STDOUT )
+             [ WITH <option>='value' [AND ...] ];
+
+        Available options and defaults:
+
+          DELIMITER=','    - character that appears between records
+          QUOTE='"'        - quoting character to be used to quote fields
+          ESCAPE='\'       - character to appear before the QUOTE char when quoted
+          HEADER=false     - whether to ignore the first line
+          NULL=''          - string that represents a null value
+          ENCODING='utf8'  - encoding for CSV output (COPY TO only)
+
+        When entering CSV data on STDIN, you can use the sequence "\."
+        on a line by itself to end the data input.
+
+root@cqlsh:mykeyspace1> copy users ( user_id,fname,lname) FROM
+               ... ('/tmp/input.csv');
+Improper copy command.
+root@cqlsh:mykeyspace1> copy users (user_id,fname,lname) FROM ('/tmp/input.csv')
+               ... WITH DELIMITER=',';
+Improper copy command.
+root@cqlsh:mykeyspace1> copy users (user_id,fname,lname) FROM ('/tmp/input.csv' | STDIN) WITH DELIMITER=',';                           
+Invalid syntax at line 1, char 57
+  copy users (user_id,fname,lname) FROM ('/tmp/input.csv' | STDIN) WITH DELIMITER=',';
+                                                          ^
+root@cqlsh:mykeyspace1> copy users (user_id,fname,lname) TO ('/tmp/output.csv') WITH DELIMITER=',';                                    Improper copy command.
+root@cqlsh:mykeyspace1> copy users FROM '/tmp/input.csv';                                                                              
+4 rows imported in 0.148 seconds.
+root@cqlsh:mykeyspace1> select * from users;
+
+ user_id | fname | lname
+---------+-------+---------
+       1 |     a |       b
+       2 |     p |       k
+       4 |     d |       k
+    1231 |  null | nagaraj
+      12 |  efgh | pradeep
+    1234 |  efgh | nagaraj
+       3 |     n |       c
+
+(7 rows)
+root@cqlsh:mykeyspace1> copy users to '/tmp/output.csv';
+
+7 rows exported in 0.122 seconds.
+root@cqlsh:mykeyspace1>
