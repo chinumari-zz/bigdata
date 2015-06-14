@@ -1,0 +1,123 @@
+Please refer the below link for more details.
+
+http://www.ibm.com/developerworks/library/bd-flumews/
+
+
+
+ 
+
+
+Tools: 
+
+bin/flume-ng agent -n agent -c conf -f conf/flume-conf -Dflume.root.logger=INFO,console
+
+Conf/flume-conf file
+
+root@tools:/usr/local/flume# more conf/flume-conf
+
+agent.sources = reader
+agent.channels = memoryChannel
+agent.sinks = avro-forward-sink
+
+# For each one of the sources, the type is defined
+agent.sources.reader.type = exec
+agent.sources.reader.command = tail -f /root/bigfile.txt
+# stderr is simply discarded, unless logStdErr=true
+# If the process exits for any reason, the source also exits and will prod
+uce no
+# further data.
+agent.sources.reader.logStdErr = true
+agent.sources.reader.restart = true
+
+# The channel can be defined as follows.
+agent.sources.reader.channels = memoryChannel
+
+# Each sink's type must be defined
+agent.sinks.avro-forward-sink.type = avro
+agent.sinks.avro-forward-sink.hostname = hnn
+agent.sinks.avro-forward-sink.port = 60000
+
+#Specify the channel the sink should use
+agent.sinks.avro-forward-sink.channel = memoryChannel
+
+# Each channel's type is defined.
+agent.channels.memoryChannel.type = memory
+
+# Other config values specific to each type of channel(sink or source)
+# can be defined as well
+# In this case, it specifies the capacity of the memory channel
+agent.channels.memoryChannel.capacity = 10000
+agent.channels.memoryChannel.transactionCapacity = 100
+
+
+
+
+HNN : 
+
+bin/flume-ng agent -n agent -c conf -f conf/flume-conf -Dflume.root.logger=INFO,console
+
+
+conf/flume-conf 
+
+agent.sources = avro-collection-source
+agent.channels = memoryChannel
+agent.sinks = hdfs-sink
+
+# For each one of the sources, the type is defined
+agent.sources.avro-collection-source.type = avro
+agent.sources.avro-collection-source.bind = hnn
+agent.sources.avro-collection-source.port = 60000
+
+# The channel can be defined as follows.
+agent.sources.avro-collection-source.channels = memoryChannel
+
+# Each sink's type must be defined
+agent.sinks.hdfs-sink.type = hdfs
+agent.sinks.hdfs-sink.hdfs.path = hdfs://hnn:9000/flume
+
+#Specify the channel the sink should use
+agent.sinks.hdfs-sink.channel = memoryChannel
+
+# Each channel's type is defined.
+agent.channels.memoryChannel.type = memory
+
+# Other config values specific to each type of channel(sink or source)
+# can be defined as well
+# In this case, it specifies the capacity of the memory channel
+agent.channels.memoryChannel.capacity = 10000
+
+
+
+Result:
+
+root@tools:~# echo "Hundred" >> bigfile.txt
+root@tools:~# echo "Gothilla" >> bigfile.txt
+
+
+root@hnn:~# hadoop fs -ls /flume
+Found 5 items
+-rw-r--r--   3 root supergroup        333 2015-06-04 22:55 /flume/FlumeData.1433438708237
+-rw-r--r--   3 root supergroup        121 2015-06-04 22:55 /flume/FlumeData.1433438708238
+-rw-r--r--   3 root supergroup        122 2015-06-04 22:56 /flume/FlumeData.1433438771060
+-rw-r--r--   3 root supergroup        203 2015-06-04 22:59 /flume/FlumeData.1433438965190
+-rw-r--r--   3 root supergroup        123 2015-06-04 23:02 /flume/FlumeData.1433439129373
+
+
+root@hnn:~# hadoop fs -copyToLocal /flume/FlumeData.1433439129373
+
+root@hnn:~# more FlumeData.1433439129373
+SEQ!org.apache.hadoop.io.LongWritable"org.apache.hadoop.io.BytesWritablethilla
+root@hnn:~#
+
+
+
+
+
+Cheers
+Nagaraj C
+Data Science Specialist
+HP Enterprise Services
+Hewlett-Packard Company
+
+ 
+
