@@ -1,0 +1,63 @@
+root@master:~/wordcount# more wctweet.R 
+library(twitteR)
+library(rmr2) 
+
+consumer_key='F6snQX0nXBT6aiwoL8gzyGGHg'
+consumer_secret='7sicBZH00yVCGUHRalohMK0xha1R8eHyj1ol6kzvmQxNCVGpWV'
+access_token='565608295-1mDGR6wYPiLYeSghbYFvuxaw8tqFJo1cIS6kxPmb'
+access_secret='5A1gRgkujl3lA88ecugzBkcsFYsWcie2BkAqvRGZsTujm'
+
+options(httr_oauth_cache=T)
+
+setup_twitter_oauth(consumer_key, consumer_secret,access_token, access_secret)
+
+#tweet <- userTimeline("narendramodi",n=1000)
+#tweet <- userTimeline("sachin_rt",n=100)
+tweet <- userTimeline("BarackObama",n=100)
+tweet <- twListToDF(tweet)
+
+write.csv(tweet,file="/root/wordcount/tweet.data")
+system("hadoop fs -copyFromLocal /root/wordcount/tweet.data hdfs:///root/wordcount/tweet.data")
+
+Sys.setenv("HADOOP_HOME"="/usr/local/hadoop")
+
+Sys.setenv("HADOOP_STREAMING"="/usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar")
+
+ map <- function(k,lines) {
+  words.list <- strsplit(lines, '\\s') 
+  words <- unlist(words.list)
+  return( keyval(words, 1) )
+}
+
+reduce <- function(word, counts) { 
+  keyval(word, sum(counts))
+}
+
+
+wordcount <- function (input, output=NULL) { 
+  mapreduce(input=input, output=output, input.format="text", map=map, reduce=reduce)
+}
+
+
+
+## read text files from folder wordcount/data
+## save result in folder wordcount/out
+## Submit job
+
+hdfs.root <- "/root/wordcount/"
+
+hdfs.data <- file.path(hdfs.root, "tweet.data") 
+
+hdfs.out <- file.path(hdfs.root, "tweet.out") 
+
+out <- wordcount(hdfs.data, hdfs.out)
+
+results <- from.dfs(out)
+
+#results.df <- do.call("rbind",lapply(results.as.data.frame))
+
+results.df <- as.data.frame(results, stringsAsFactors=F) 
+
+colnames(results.df) <- c('word', 'count') 
+
+head(results.df[order(results.df$count,decreasing=TRUE),],n=100)
