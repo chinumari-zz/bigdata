@@ -1,3 +1,13 @@
+mobile num name
+mobile num city
+mobile num amount
+
+
+create table namnum( m_number bigint, name varchar(30) );
+
+create table citnum( cityname varchar(30), pincode int, m_number bigint not null primary key);
+create table amonum( amount double, m_number bigint not null primary );
+
 
 mysql> help ALTER TABLEALTER TABLE
 
