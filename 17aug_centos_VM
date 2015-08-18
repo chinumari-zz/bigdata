@@ -1,0 +1,58 @@
+root/root123
+
+
+Create one VM with centOS 6.6
+update after installation of OS
+clone it for 4 other vm's
+
+mgm resman namenode datanode1 datanode2
+
+edited /etc/hosts
+
+
+edited /etc/hostname for systemname
+
+edited etc/sysconfig/network for hostname
+
+
+192.168.56.106 namenode
+192.168.56.102 mgm
+192.168.56.107 resman
+192.168.56.108 datanode1
+192.168.56.109 datanode2
+
+Install apache web server and create localrepository
+
+service iptables stop
+chkconfig  iptables off
+
+Disable selinux
+
+enable passwordless SSH
+
+Download and keep the packages in local repository
+
+sudo yum install should fetch from the local repository
+
+Disabling SELINUX
+
+---------------------
+
+https://www.centos.org/docs/5/html/5.1/Deployment_Guide/sec-sel-enable-disable.html
+
+From the command line, you can edit the /etc/sysconfig/selinux file. This file is a symlink to/etc/selinux/config. The configuration file is self-explanatory. Changing the value of SELINUX or SELINUXTYPEchanges the state of SELinux and the name of the policy to be used the next time the system boots.
+
+[root@host2a ~]# cat /etc/sysconfig/selinux
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#       enforcing - SELinux security policy is enforced.
+#       permissive - SELinux prints warnings instead of enforcing.
+#       disabled - SELinux is fully disabled.
+SELINUX=permissive
+# SELINUXTYPE= type of policy in use. Possible values are:
+#       targeted - Only targeted network daemons are protected.
+#       strict - Full SELinux protection.
+SELINUXTYPE=targeted
+
+# SETLOCALDEFS= Check local definition changes
+SETLOCALDEFS=0
