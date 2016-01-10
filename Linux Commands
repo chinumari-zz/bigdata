@@ -1,0 +1,2 @@
+lsb_release -a
+  Used to check the version of current Linux running on system.
