@@ -1,5 +1,27 @@
-Installation of Pandas/Scikit-learn
+Installation of Pandas/Scikit-learn on ubuntu [Tools VM]
 Execution of glm, SVM, Random Forest models for Sales data using R
 Virtual environment setup for Python in Ubuntu
 
 http://stackoverflow.com/questions/19989355/extracting-a-random-sample-of-rows-in-a-data-frame-with-a-nested-conditional
+
+Using Random forest the accuracy of the model was high clost to 90. [More rows/records and Replace = True]
+------------------------------------
+pandas helps fill this gap, enabling you to carry out your entire data analysis workflow in Python without 
+having to switch to a more domain specific language like R.
+
+Combined with the excellent IPython toolkit and other libraries, the environment for doing data analysis in 
+Python excels in performance, productivity, and the ability to collaborate.
+
+pandas does not implement significant modeling functionality outside of linear and panel regression; 
+for this, look to statsmodels and scikit-learn. More work is still needed to make Python a first class statistical 
+modeling environment, but we are well on our way toward that goal.
+
+Tools in Python for Data Analysis
+---------------------------------
+SciPy
+NumPy
+StatsModels
+scikit-learn
+IPython
+matplotlib
+vbench
