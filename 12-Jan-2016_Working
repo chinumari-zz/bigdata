@@ -1,0 +1,23 @@
+
+
+Sales data models were represented Using ROC in R language.
+Method 1
+
+roc_pred <- prediction( Glm_Results, test1)
+perf1 <- performance(roc_pred,"tpr","fpr")
+
+roc_pred <- prediction( svm_results, test1)
+perf2 <- performance(roc_pred,"tpr","fpr")
+
+Method 2
+
+roc_pred <- prediction( rf_results, test1)
+perf3 <- performance(roc_pred,"tpr","fpr")
+
+plot(perf1,col=rainbow(10))
+plot(perf2,col=greenred(11))
+plot(perf3,col=bluered(10))
+
+plot(perf1,col=rainbow((10)))
+lines(perf2@x.values[[1]], perf2@y.values[[1]], col = greenred(11))
+lines(perf3@x.values[[1]], perf3@y.values[[1]], col = bluered(10))
