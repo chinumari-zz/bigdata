@@ -1,0 +1,58 @@
+root@tools:~/pandas# cat Sales-Pred_13Jan.py
+import pandas as pd
+import numpy as np
+from sklearn import svm
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix
+from sklearn import linear_model
+salesDF = pd.DataFrame.from_csv("/root/pandas/Sales.csv")
+#salesDF = salesDF1.append(salesDF1)
+#salesDF = salesDF.append(salesDF1)
+
+print(len(salesDF))
+salesDF.columns
+industryMap = {val:k for (k,val) in enumerate(pd.unique(salesDF['Industry'].ravel()))}
+resultMap = {val:k for (k,val) in enumerate(pd.unique(salesDF['Result'].ravel()))}
+resultRevMap = {k:val for (val,k) in resultMap.iteritems()}
+def industryToCategory(i):
+  return industryMap[i]
+
+def resultToCategory(r):
+  return resultMap[r]
+
+def catToResult(k):
+  return resultRevMap[k]
+salesDF['indCat'] = salesDF['Industry'].apply(industryToCategory)
+salesDF['resCat'] = salesDF['Result'].apply(resultToCategory)
+salesDF_trainData = salesDF.sample(frac=0.7)
+salesDF_testData = salesDF.loc[~salesDF.index.isin(salesDF_trainData.index)]
+#salesDF_trainData = salesDF.head(10000)
+#salesDF_testData = salesDF.tail(5000)
+print(len(salesDF_trainData))
+print(len(salesDF_testData))
+X = salesDF_trainData[[u'introduction',u'diligence',u'proposal',u'negotiation',u'closing',u'indCat',u'Amount']]
+X1 = salesDF_testData[[u'introduction',u'diligence',u'proposal',u'negotiation',u'closing',u'indCat',u'Amount']]
+y = salesDF_trainData['resCat']
+y1 = salesDF_testData['resCat']
+from sklearn import linear_model
+#classifier = linear_model.SGDClassifier()
+#classifier = svm.SVR()
+#classifier = RandomForestClassifier(n_estimators=10)
+classifier = linear_model.LogisticRegression()
+
+classifier.fit(X, y)
+score= classifier.score(X1, y1)
+print score
+
+y2= classifier.fit(X, y).predict(X1)
+cm = confusion_matrix(y1, y2)
+np.set_printoptions(precision=2)
+print('Confusion matrix, without normalization')
+print(cm)
+
+#classifier.fit(X1, y1)
+#salesDF_testData['ResultPred'] = map(catToResult, classifier.predict(X1))
+#salesDF_trainData['ResultPred'] = map(catToResult, classifier.predict(X))
+#import sklearn
+#print(sklearn.metrics.accuracy_score(salesDF_trainData['Result'], salesDF_trainData['ResultPred']))
+root@tools:~/pandas#
