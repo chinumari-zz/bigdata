@@ -1,0 +1,9 @@
+Telco Churn out customer exercise
+  https://community.watsonanalytics.com/wp-content/uploads/2015/03/WA_Fn-UseC_-Telco-Customer-Churn.csv
+
+Tried 3 models and results were not satisfactory
+
+If we have more than 2 values in a column to be replaced we can do using below command,
+  telco$MultipleLines <- ifelse(telco$MultipleLines == "Yes", 1,ifelse(telco$MultipleLines == "No",0,2))
+  
+    Kannada Kali illave Madi - PKGL
