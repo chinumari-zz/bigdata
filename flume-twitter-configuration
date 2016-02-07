@@ -1,0 +1,93 @@
+HDP Flume configuration
+
+Edit flume-twitter.conf
+
+[hdfs@mgm conf]$ cat flume-twitter.conf
+TwitterAgent.sources = Twitter1
+TwitterAgent.channels = MemChannel
+TwitterAgent.sinks = HDFS
+
+TwitterAgent.sources.Twitter1.type = org.apache.flume.source.twitter.TwitterSource
+TwitterAgent.sources.Twitter1.channels = MemChannel
+TwitterAgent.sources.Twitter1.consumerKey = PXu0reZWSc23YDqn9UnYdbmNZ
+TwitterAgent.sources.Twitter1.consumerSecret = QpyGgCtMn3nw4jr1SSTi3OFNxDqLHbFNApHxPBMQ8zNr8cYPGQ
+TwitterAgent.sources.Twitter1.accessToken = 70460385-JU8qeOFGIFvkFAnx9eb34dBUj3P1On7ql8E0s30ip
+TwitterAgent.sources.Twitter1.accessTokenSecret = W8jKLnFiK4DaHxAaJPQ0g4gSkqBIdIyTtYsHAtTIytxG6
+
+#TwitterAgent.sources.Twitter1.keywords = Hortonworks, Hadoop, Big Data, Owen O'Malley, Arun Murthy, Herb Cunitz, open source, Apache Software Foundation, Cloudera, Impala, Hive, Stinger, MapR
+
+TwitterAgent.sources.Twitter1.keywords = hadoop, narendra modi
+# Demo values - files flush small so they appear quickly on disk
+# Production config - batchsize no limit, compressed. outputs 1 file per hour.
+TwitterAgent.sinks.HDFS.channel = MemChannel
+TwitterAgent.sinks.HDFS.type = hdfs
+TwitterAgent.sinks.HDFS.hdfs.path = hdfs://namenode:8020/hdp/flume/twitter
+
+#TwitterAgent.sinks.HDFS.hdfs.fileType = CompressedStream
+TwitterAgent.sinks.HDFS.hdfs.fileType = DataStream
+TwitterAgent.sinks.HDFS.hdfs.writeFormat = Text
+#TwitterAgent.sinks.HDFS.hdfs.codeC = snappy
+TwitterAgent.sinks.HDFS.hdfs.batchSize = 1000
+TwitterAgent.sinks.HDFS.hdfs.rollSize = 0
+
+#TwitterAgent.sinks.HDFS.hdfs.rollCount = 10000
+TwitterAgent.sinks.HDFS.hdfs.rollCount = 0
+
+# 15 mn = 900 s
+TwitterAgent.sinks.HDFS.hdfs.rollInterval = 900
+TwitterAgent.channels.MemChannel.type = memory
+TwitterAgent.channels.MemChannel.capacity = 10000
+TwitterAgent.channels.MemChannel.transactionCapacity = 10000
+
+
+Edit flume-env.sh
+
+[hdfs@mgm conf]$ cat flume-env.sh
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# If this file is placed at FLUME_CONF_DIR/flume-env.sh, it will be sourced
+# during Flume startup.
+
+# Enviroment variables can be set here.
+
+# export JAVA_HOME=/usr/lib/jvm/java-6-sun
+
+# Give Flume more memory and pre-allocate, enable remote monitoring via JMX
+# export JAVA_OPTS="-Xms100m -Xmx2000m -Dcom.sun.management.jmxremote"
+
+# Note that the Flume conf directory is always included in the classpath.
+FLUME_CLASSPATH=/usr/hdp/2.3.0.0-2557/flume/lib
+
+# export HIVE_HOME=/usr/lib/hive
+# export HCAT_HOME=/usr/lib/hive-hcatalog
+
+Pending
+---------
+1.Fetch data from twitter handle
+2.Fetch 1000 records every 30 mins (latest only)
+3.Run MR job Word-Count After 15mins of Flume job run
+4.Write the output into a csv file.
+5.Visualisation using graph in excel
+
+
+
+
+
+
+Run  ./flume-ng agent -n TwitterAgent -c conf -f ../conf/flume-twitter.conf to stream data
+
+Need to run as hdfs user to store data on hdfs
